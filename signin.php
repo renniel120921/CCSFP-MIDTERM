@@ -63,7 +63,7 @@ include_once 'dashboard/user/authentication/user-signin.php';
                             <li><a href="<?php echo $config->getSystemInstagram() ?>"><i class="fab fa-instagram"></i></a></li>
                         </ul>
                         <div class="sign-box">
-                            <a href="signin"><i class="fas fa-user"></i>Sign In</a>
+                            <a href="signin.php"><i class="fas fa-user"></i>Sign In</a>
                         </div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@ include_once 'dashboard/user/authentication/user-signin.php';
                                     <div class="inner-box">
                                         <h4>Sign in</h4>
                                         <form action="dashboard/user/authentication/user-signin.php" method="post" novalidate class="default-form needs-validation">
-                                            <input type="hidden" id="g-token" name="g-token">    
+                                            <input type="hidden" id="g-token" name="g-token">
                                             <div class="form-group">
                                                 <label>Email address</label>
                                                 <input type="email" class="form-control" name="email" required autofocus>

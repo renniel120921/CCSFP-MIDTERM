@@ -33,7 +33,7 @@ class UserController
             $_SESSION['status'] = "No email found, Please try again!";
             $_SESSION['status_code'] = "error";
             $_SESSION['status_timer'] = 40000;
-            header('Location: ../../../signin');
+            header('Location: ../../../signin.php');
             exit();
         } else {
             //check if the email already exist before sending OTP
@@ -46,7 +46,7 @@ class UserController
                 $_SESSION['status'] = "Email already taken. Please try another one.";
                 $_SESSION['status_code'] = "error";
                 $_SESSION['status_timer'] = 100000;
-                header('Location: ../../../signin');
+                header('Location: ../../../signin.php');
                 exit();
             }
             else{
@@ -67,7 +67,7 @@ class UserController
                     margin: 0;
                     padding: 0;
                 }
-                
+
                 .container {
                     max-width: 600px;
                     margin: 0 auto;
@@ -76,19 +76,19 @@ class UserController
                     border-radius: 4px;
                     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 }
-                
+
                 h1 {
                     color: #333333;
                     font-size: 24px;
                     margin-bottom: 20px;
                 }
-                
+
                 p {
                     color: #666666;
                     font-size: 16px;
                     margin-bottom: 10px;
                 }
-                
+
                 .button {
                     display: inline-block;
                     padding: 12px 24px;
@@ -99,7 +99,7 @@ class UserController
                     font-size: 16px;
                     margin-top: 20px;
                 }
-                
+
                 .logo {
                     display: block;
                     text-align: center;
@@ -128,7 +128,7 @@ class UserController
             $_SESSION['status_code'] = 'success';
             $_SESSION['status_timer'] = 40000;
 
-            header('Location: ../../../verify-otp');
+            header('Location: ../../../verify-otp.php');
             exit;
         }
     }
@@ -146,7 +146,7 @@ class UserController
             $key = base64_encode($id);
             $id = $key;
 
-            $message = 
+            $message =
             "
             <!DOCTYPE html>
             <html>
@@ -161,7 +161,7 @@ class UserController
                         margin: 0;
                         padding: 0;
                     }
-                    
+
                     .container {
                         max-width: 600px;
                         margin: 0 auto;
@@ -170,19 +170,19 @@ class UserController
                         border-radius: 4px;
                         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                     }
-                    
+
                     h1 {
                         color: #333333;
                         font-size: 24px;
                         margin-bottom: 20px;
                     }
-                    
+
                     p {
                         color: #666666;
                         font-size: 16px;
                         margin-bottom: 10px;
                     }
-                    
+
                     .button {
                         display: inline-block;
                         padding: 12px 24px;
@@ -193,7 +193,7 @@ class UserController
                         font-size: 16px;
                         margin-top: 20px;
                     }
-                    
+
                     .logo {
                         display: block;
                         text-align: center;
@@ -232,7 +232,7 @@ class UserController
             unset($_SESSION['not_verify_email']);
             unset($_SESSION['user_type'] );
 
-            header('Location: ../../../signin');
+            header('Location: ../../../signin.php');
             exit();
 
         } else if ($otp == NULL) {
@@ -240,14 +240,14 @@ class UserController
             $_SESSION['status'] = "It appears that the OTP you entered is invalid. Please try again!";
             $_SESSION['status_code'] = "error";
             $_SESSION['status_timer'] = 40000;
-            header('Location: ../../../verify-otp');
+            header('Location: ../../../verify-otp.php');
             exit();
         } else {
             $_SESSION['status_title'] = "OTP is invalid";
             $_SESSION['status'] = "It appears that the OTP you entered is invalid. Please try again!";
             $_SESSION['status_code'] = "error";
             $_SESSION['status_timer'] = 40000;
-            header('Location: ../../../verify-otp');
+            header('Location: ../../../verify-otp.php');
             exit();
         }
     }
@@ -269,7 +269,7 @@ if (isset($_POST['btn-signup'])) {
 }
 
 //verify email through OTP
-if (isset($_POST['btn-verifies-otp'])) {
+if (isset($_POST['btn-verify-otp'])) {
 
     // Set the verified details in session
     $first_name     = $_SESSION['not_verify_firstname'];

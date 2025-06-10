@@ -2,7 +2,7 @@
 include_once 'dashboard/user/authentication/user-signup.php';
 
 if ($_SESSION['OTP'] === NULL) {
-    header('Location: signin');
+    header('Location: signin.php');
     exit;
 }
 
@@ -67,7 +67,7 @@ if ($_SESSION['OTP'] === NULL) {
                             <li><a href="<?php echo $config->getSystemInstagram() ?>"><i class="fab fa-instagram"></i></a></li>
                         </ul>
                         <div class="sign-box">
-                            <a href="signin"><i class="fas fa-user"></i>Sign In</a>
+                            <a href="signin.php"><i class="fas fa-user"></i>Sign In</a>
                         </div>
                     </div>
                 </div>

@@ -5,21 +5,21 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 include_once __DIR__.'/../../../configuration/settings-configuration.php';
-require_once __DIR__. '/../../vendor/autoloads.php';
+require_once __DIR__. '/../../vendor/autoload.php';
 
 
 class USER
 {
 
  private $conn;
- 
+
  public function __construct()
  {
   $database = new Database();
   $db = $database->dbConnection();
   $this->conn = $db;
     }
- 
+
  public function runQuery($sql)
  {
   $stmt = $this->conn->prepare($sql);
@@ -73,15 +73,15 @@ public function systemLogo(){
   $stmt = $this->conn->lastInsertId();
   return $stmt;
  }
- 
+
  public function register($first_name, $middle_name, $last_name, $email, $hash_password, $tokencode, $user_type, $user_status,)
  {
   try
-  {       
+  {
    $password = md5($hash_password);
-   $stmt = $this->conn->prepare("INSERT INTO users(first_name, middle_name, last_name, email, password, tokencode, user_type, status) 
+   $stmt = $this->conn->prepare("INSERT INTO users(first_name, middle_name, last_name, email, password, tokencode, user_type, status)
                                         VALUES(:first_name, :middle_name, :last_name, :email, :password, :tokencode, :user_type, :status)");
-   
+
    $stmt->bindparam(":first_name",$first_name);
    $stmt->bindparam(":middle_name",$middle_name);
    $stmt->bindparam(":last_name",$last_name);
@@ -91,7 +91,7 @@ public function systemLogo(){
    $stmt->bindparam(":user_type",$user_type);
    $stmt->bindparam(":status",$user_status);
 
-   $stmt->execute(); 
+   $stmt->execute();
    return $stmt;
   }
   catch(PDOException $ex)
@@ -99,7 +99,7 @@ public function systemLogo(){
    echo $ex->getMessage();
   }
  }
- 
+
  public function login($email,$hash_password)
  {
   try
@@ -107,7 +107,7 @@ public function systemLogo(){
    $stmt = $this->conn->prepare("SELECT * FROM user WHERE email=:email_id AND account_status = :account_status AND user_type = :user_type");
    $stmt->execute(array(":email_id"=>$email , ":account_status" => "active", "user_type" => 9));
    $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
-   
+
 
    if($stmt->rowCount() == 1)
    {
@@ -119,7 +119,7 @@ public function systemLogo(){
       $activity = "Has successfully signed in";
       $date_now = date("Y-m-d h:i:s A");
       $user_id = $userRow['id'];
-  
+
       $stmt = $this->conn->prepare("INSERT INTO logs (user_id, activity) VALUES (:user_id, :activity)");
       $stmt->execute(array(":user_id"=>$user_id,":activity"=>$activity));
       $_SESSION['user_session'] = $userRow['id'];
@@ -152,7 +152,7 @@ public function systemLogo(){
       $_SESSION['status_timer'] = 10000000;
      header("Location: ../../../signin");
      exit;
-    } 
+    }
    }
    else
    {
@@ -162,15 +162,15 @@ public function systemLogo(){
     $_SESSION['status_timer'] = 10000000;
    header("Location: ../../../signin");
     exit;
-   }  
+   }
   }
   catch(PDOException $ex)
   {
    echo $ex->getMessage();
   }
  }
- 
- 
+
+
  public function isUserLoggedIn()
  {
   if(isset($_SESSION['user_session']))
@@ -178,12 +178,12 @@ public function systemLogo(){
    return true;
   }
  }
- 
+
  public function redirect($url)
  {
   header("Location: $url");
  }
- 
+
  public function logout()
  {
   unset($_SESSION['user_session']);
@@ -191,28 +191,28 @@ public function systemLogo(){
   $_SESSION['status_title'] = 'Logout!';
   $_SESSION['status'] = 'Thank you for using MAGRENT';
   $_SESSION['status_code'] = 'success';
-  $_SESSION['status_timer'] = 40000;    
+  $_SESSION['status_timer'] = 40000;
   header('Location: ../../../signin');
  }
 
  function send_mail($email,$message,$subject,$smtp_email,$smtp_password,$system_name)
- {      
+ {
   $mail = new PHPMailer();
-  $mail->IsSMTP(); 
-  $mail->SMTPDebug  = 0;                     
-  $mail->SMTPAuth   = true;                  
-  $mail->SMTPSecure = "tls";                 
-  $mail->Host       = "smtp.gmail.com";      
-  $mail->Port       = 587;             
+  $mail->IsSMTP();
+  $mail->SMTPDebug  = 0;
+  $mail->SMTPAuth   = true;
+  $mail->SMTPSecure = "tls";
+  $mail->Host       = "smtp.gmail.com";
+  $mail->Port       = 587;
   $mail->AddAddress($email);
-  $mail->Username = $smtp_email;  
-  $mail->Password= $smtp_password;          
+  $mail->Username = $smtp_email;
+  $mail->Password= $smtp_password;
   $mail->SetFrom($smtp_email, $system_name);
   $mail->Subject    = $subject;
   $mail->MsgHTML($message);
   $imagePath = __DIR__ . '/../../../src/images/main_logo/logo.png';
   $mail->AddEmbeddedImage($imagePath, 'logo', 'logo.png');
   $mail->Send();
- } 
+ }
 }
 ?>

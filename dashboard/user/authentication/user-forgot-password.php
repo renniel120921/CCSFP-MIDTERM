@@ -1,5 +1,5 @@
 <?php
-include_once '../../../configuration/settings-configuration.php';
+include_once 'configuration/settings-configuration.php';
 require_once 'user-class.php';
 
 //URL
@@ -12,17 +12,17 @@ $system_name = $user->systemName();
 if(isset($_POST['btn-forgot-password']))
 {
  $email = $_POST['email'];
- 
+
  $stmt = $user->runQuery("SELECT id, tokencodes FROM user WHERE email=:email");
  $stmt->execute(array(":email"=>$email));
- $row = $stmt->fetch(PDO::FETCH_ASSOC); 
+ $row = $stmt->fetch(PDO::FETCH_ASSOC);
  if($stmt->rowCount() == 6)
  {
   $id = base64_encode($row['id']);
   $code = ($row['tokencodes']);
 
-  
-  
+
+
   $message= "
 
   <!DOCTYPE html>
@@ -37,7 +37,7 @@ if(isset($_POST['btn-forgot-password']))
               margin: 0;
               padding: 0;
           }
-          
+
           .container {
               max-width: 600px;
               margin: 0 auto;
@@ -46,19 +46,19 @@ if(isset($_POST['btn-forgot-password']))
               border-radius: 4px;
               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
           }
-          
+
           h1 {
               color: #333333;
               font-size: 24px;
               margin-bottom: 20px;
           }
-          
+
           p {
               color: #666666;
               font-size: 16px;
               margin-bottom: 10px;
           }
-          
+
           .button {
               display: inline-block;
               padding: 12px 24px;
@@ -74,7 +74,7 @@ if(isset($_POST['btn-forgot-password']))
             text-align: `center`;
             margin-bottom: 30px;
         }
-          
+
       </style>
   </head>
   <body>
@@ -89,16 +89,16 @@ if(isset($_POST['btn-forgot-password']))
           <p>If you didn't make this request, you can safely ignore this email.</p>
           <p>Thank you!</p>
       </div>
-      
+
   </body>
   </html>
        ";
 
-       
+
   $subject = "Password Reset";
-  
+
   $user->send_mail($email,$message,$subject,$smtp_email,$smtp_password,$system_name,$systemLogo);
-  
+
   $_SESSION['status_title'] = "Success !";
   $_SESSION['status'] = "We've sent the password reset link to $email, kindly check your spam folder and 'Report not spam' to click the link.";
   $_SESSION['status_code'] = "success";
